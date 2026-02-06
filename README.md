@@ -1,113 +1,164 @@
-# File Sorter Script
+# Automation File Sorter (CLI)
 
-This project is part of my Dev Journey, a structured, project-based exploration
-of the main types of software development.
+This project is part of my **Dev Journey**, a structured, project-based exploration
+of different areas of software development.
 
-It focuses on building a simple yet practical automation tool to organize files on a local filesystem.
+It focuses on building a **safe, practical command-line automation tool**
+that organizes files in a directory based on their file extensions.
 
 ---
 
 ## Project goals
 
-- Understand what a real-world automation script is and how it is structured
+- Understand how real-world automation scripts are designed
 - Learn how to safely manipulate the filesystem using a CLI tool
-- Practice writing a useful, reusable script rather than a purely academic exercise
-- Gain confidence in handling edge cases and user input validation
+- Practice separating analysis, decision-making, and execution logic
+- Handle edge cases and user input validation
+- Build a reusable, idempotent developer tool
 
 ---
 
 ## Features
 
-- Sorts files in a given directory by their file extension
-- Automatically creates subfolders for each detected extension
-- Moves files into the appropriate subfolder
-- Supports a dry-run mode to preview actions without modifying anything
-- Provides clear terminal output for user feedback
+- Sorts files by their extension (e.g. `.pdf`, `.jpg`, `.txt`)
+- Automatically creates destination folders when needed
+- Supports files without extensions via a configurable `others` folder
+- Dry-run mode to preview actions without modifying the filesystem
+- Verbose mode for detailed execution logs
+- Detects and skips conflicts safely
+- Safe to run multiple times on the same directory
 
 ---
 
 ## Usage
 
-The script is executed from the command line and takes a directory path as input.
-
-Typical usage examples:
-- Sort files in a directory by extension
-- Preview what would happen without moving any files
-- Display detailed information about each action performed
-
----
-
-## How it works
-
-1. The script reads and validates command-line arguments
-2. It scans the target directory and identifies files (excluding subdirectories)
-3. Each file’s extension is analyzed and normalized
-4. A target folder is determined for each file
-5. Required folders are created if they do not already exist
-6. Files are either moved or listed, depending on the execution mode
-7. A summary of the operation is displayed at the end
-
----
-
-## Project structure
+Run the script from the command line:
 
 ```bash
-file_sorter/
-├── README.md
-├── sorter.py
-├── requirements.txt
-└── examples/
-    └── sample_folder/
+python sorter.py <directory_path> [options]
+```
+
+### Options
+- `--dry-run`
+
+    Preview actions without creating folders or moving files
+- `-v`, `--verbose`
+
+    Display detailed output for each step and action
+- `others-folder <name>`
+
+    Folder name used for files without extensions (default: others)
+
+### Examples
+
+```bash
+# Preview actions
+python sorter.py ./downloads --dry-run -v
+
+# Sort files normally
+python sorter.py ./downloads
+
+# Verbose execution
+python sorter.py ./downloads -v
+
 ```
 
 ---
 
-## Technologies used
-
-- Python 3
-- Python Standard Library only
-- argparse for CLI handling
-- OS and filesystem utilities
+## How it works
+1. Command-line arguments are parsed and validated
+2. The target directory is scanned (non-recursive)
+3. Files are analyzed and classified by extension
+4. Required destination directories are identified
+5. Actions are generated (create directories, move files)
+6. Conflicts are detected before execution
+7. Actions are executed safely
+8. A summary is displayed at the end
 
 ---
 
-## Key concept practiced
+## Project structure
+```bash
+file_sorter/
+├── sorter.py                # CLI entry point
+├── analysis.py              # Filesystem analysis & action planning
+├── executor.py              # Action execution layer
+├── actions.py               # Action data model
+├── processed_files.py       # File classification logic
+├── README.md
+├── CHANGELOG.md
+├── requirements.txt
+└── tests/
+    └── test_directory_template/
+        ├── README.md
+        └── .gitkeep
+```
 
+---
+
+## Testing
+A reusable test directory template is provided in:
+```bash
+tests/test_directory_template/
+```
+This directory can be copied and populated manually to simulate real-world
+scenarios (conflicts, existing folders, mixed file types, etc.).
+
+The script is designed to be tested safely using `--dry-run`.
+
+---
+
+## Technologies used
+- Python 3
+- Python standard libraries only
+- argparse
+- os / shutil for filesystem operations
+
+---
+
+## Key concepts practiced
 - Automation scripting
 - Command-line interface design
 - Filesystem traversal and manipulation
-- Defensive programming and error handling
-- Designing safe, repeatable developer tools
+- Defensive programming
+- Separation of concerns
+- Idempotent script design
 
 ---
 
-## Scope & limitations
-
-- The script only processes files in a single directory (non-recursive)
-- No advanced file renaming is performed
-- No graphical interface
+## Scope and limitations
+- Non-recursive directory processing
+- No file renaming or content inspection
 - No external dependencies
-- Designed for learning and daily-use automation, not large-scale file systems
+- CLI-only (no GUI)
+- Designed for learning and daily-use automation
 
 ---
 
 ## What I learned
-
-- How to think in terms of automation rather than application development
-- How to design a script that is safe to run multiple times
-- The importance of separating analysis, decision-making, and execution
-- How small tools can provide real productivity gains
+- How to think in terms of automation rather than applications
+- How to design scripts that are safe to rerun
+- How to detect and handle filesystem conflicts
+- How to structure a CLI tool cleanly
+- How small utilities can deliver real productivity gains
 
 ---
 
 ## Versioning
 
-v1.0 — Initial implementation: file sorting by extension with CLI support
+This project follows **Semantic Versioning**.
+
+Current version: **v1.0.0**
 
 ---
 
 ## How this fits into my dev journey
+This project represents my first automation-focused CLI tool.
+It bridges the gap between learning Python fundamentals and building
+useful, real-world developer utilities.
 
-This project represents my first step into automation development, following a CLI-based project.
-It helped me shift from writing programs that demonstrate concepts to scripts that solve real problems,
-laying the foundation for more advanced automation, scripting, and system-level projects.
+it serves as a foundation for future projects involving:
+- scripting
+- system tools
+- automation pipelines
+- CLI application design
