@@ -3,6 +3,9 @@
 This project is part of my **Dev Journey**, a structured, project-based exploration
 of different areas of software development.
 
+
+[View Dev Journey GitHub 'Hub' repository](https://github.com/DorianCrds/dev-journey-static-website)
+
 It focuses on building a **safe, practical command-line automation tool**
 that organizes files in a directory based on their file extensions.
 
